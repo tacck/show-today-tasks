@@ -8,7 +8,7 @@
             dark
             flat
           >
-            <v-toolbar-title>This is a header</v-toolbar-title>
+            <v-toolbar-title>Today's Tasks</v-toolbar-title>
           </v-toolbar>
         </template>
       <template v-slot:default="props">
