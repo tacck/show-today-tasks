@@ -66,7 +66,7 @@ export default {
     finish: function (id) {
       console.log(id)
       window.interactiveCanvas.sendTextQuery(`finishedTask-${id}`)
-      this.lists = this.lists.filter((list) => list.id !== id)
+      // this.lists = this.lists.filter((list) => list.id !== id)
     }
   }
 }
