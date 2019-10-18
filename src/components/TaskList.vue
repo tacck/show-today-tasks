@@ -61,21 +61,38 @@ export default {
   mounted: async function () {
     // Callback で カード移動の処理を実装
     window.interactiveCanvas.ready({
-      onUpdate: async (data) => {
+      onUpdate: async data => {
         console.log('onUpdate: ' + JSON.stringify(data))
         console.log('finishedListId:' + this.finishedListId)
+        let cardId = ''
+        let cardNumber = -1
+        // let card = null
 
-        if ('cardNumber' in data) {
-          const card = this.lists[data.cardNumber - 1]
-          await axios.put(`https://api.trello.com/1/cards/${card.id}?idList=${this.finishedListId}&key=${this.apiKey}&token=${this.apiToken}&pos=bottom`)
-          this.lists.splice(data.cardNumber - 1, 1)
+        if ('cardId' in data) {
+          cardId = data.cardId
+          cardNumber = this.lists.findIndex(element => {
+            return element.id === cardId
+          })
+        } else if ('cardNumber' in data) {
+          cardNumber = data.cardNumber - 1
+          const card = this.lists[cardNumber]
+          cardId = card.id
         }
+
+        await axios.put(
+          `https://api.trello.com/1/cards/${cardId}?idList=${
+            this.finishedListId
+          }&key=${this.apiKey}&token=${this.apiToken}&pos=bottom`
+        )
+        this.lists.splice(cardNumber, 1)
       },
-      onTtsMark: (markName) => {}
+      onTtsMark: markName => {}
     })
 
     const response = await axios.get(
-      `https://api.trello.com/1/lists/${this.listId}/cards?fields=all&key=${this.apiKey}&token=${this.apiToken}`
+      `https://api.trello.com/1/lists/${this.listId}/cards?fields=all&key=${
+        this.apiKey
+      }&token=${this.apiToken}`
     )
     console.log(response)
     this.lists = response.data
