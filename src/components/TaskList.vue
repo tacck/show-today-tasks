@@ -66,7 +66,6 @@ export default {
         console.log('finishedListId:' + this.finishedListId)
         let cardId = ''
         let cardNumber = -1
-        // let card = null
 
         if ('cardId' in data) {
           cardId = data.cardId
@@ -77,6 +76,9 @@ export default {
           cardNumber = data.cardNumber - 1
           const card = this.lists[cardNumber]
           cardId = card.id
+        } else {
+          // 更新不要なので終了
+          return
         }
 
         await axios.put(
