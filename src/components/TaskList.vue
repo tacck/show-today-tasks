@@ -24,7 +24,10 @@
             md="4"
             lg="3"
           >
-            <v-card :id="item.id" v-on:click="finish( item.id )">
+            <v-card
+              :id="item.id"
+              v-on:click="finish( item.id )"
+            >
               <v-card-title>
                 <h4>{{ item.name }}</h4>
               </v-card-title>
@@ -64,7 +67,11 @@ export default {
     //     console.log('onTtsMark: ' + markName)
     //   }
     // })
-    window.interactiveCanvas.ready({})
+    window.interactiveCanvas.ready({
+      onUpdate: (data) => {
+        console.log('onUpdate: ' + data)
+      }
+    })
 
     const response = await axios.get(
       `https://api.trello.com/1/lists/${this.listId}/cards?fields=all&key=${this.apiKey}&token=${this.apiToken}`
