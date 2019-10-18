@@ -64,7 +64,7 @@ export default {
     //     console.log('onTtsMark: ' + markName)
     //   }
     // })
-    window.interactiveCanvas.ready()
+    window.interactiveCanvas.ready({})
 
     const response = await axios.get(
       `https://api.trello.com/1/lists/${this.listId}/cards?fields=all&key=${this.apiKey}&token=${this.apiToken}`
