@@ -14,6 +14,7 @@ export default {
   data: function () {
     return {
       listId: process.env.VUE_APP_TRELLO_LIST_ID || this.$route.query.listId,
+      finishedListId: process.env.VUE_APP_TRELLO_LIST_ID || this.$route.query.finishedListId,
       apiKey: process.env.VUE_APP_TRELLO_API_KEY || this.$route.query.apiKey,
       apiToken: process.env.VUE_APP_TRELLO_API_TOKEN || this.$route.query.apiToken,
       marginTop: 0

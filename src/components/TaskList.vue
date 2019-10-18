@@ -50,7 +50,7 @@
 import axios from 'axios'
 
 export default {
-  props: ['listId', 'apiKey', 'apiToken'],
+  props: ['listId', 'finishedListId', 'apiKey', 'apiToken'],
   data: function () {
     return {
       itemsPerPageOptions: [],
@@ -59,18 +59,18 @@ export default {
     }
   },
   mounted: async function () {
-    // window.interactiveCanvas.ready({
-    //   onUpdate: (data) => {
-    //     console.log('onUpdate: ' + data)
-    //   },
-    //   onTtsMark: (markName) => {
-    //     console.log('onTtsMark: ' + markName)
-    //   }
-    // })
+    // Callback で カード移動の処理を実装
     window.interactiveCanvas.ready({
-      onUpdate: (data) => {
-        console.log('onUpdate: ' + data)
-      }
+      onUpdate: async (data) => {
+        console.log('onUpdate: ' + JSON.stringify(data))
+
+        if ('cardNumber' in data) {
+          const cardId = this.lists[data.cardNumber - 1].id
+          await axios.put(`https://api.trello.com/1/cards/${cardId}?idList=${this.finishedListId}&key=${this.apiKey}&token=${this.apiToken}&pos=bottom`)
+          this.lists.splice(data.cardNumber - 1, 1)
+        }
+      },
+      onTtsMark: (markName) => {}
     })
 
     const response = await axios.get(
