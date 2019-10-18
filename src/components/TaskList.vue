@@ -63,16 +63,18 @@ export default {
     window.interactiveCanvas.ready({
       onUpdate: async (data) => {
         console.log('onUpdate: ' + JSON.stringify(data))
+        console.log('finishedListId:' + this.finishedListId)
 
         if ('cardNumber' in data) {
-          const cardId = this.lists[data.cardNumber - 1].id
-          await axios.put(`https://api.trello.com/1/cards/${cardId}?idList=${this.finishedListId}&key=${this.apiKey}&token=${this.apiToken}&pos=bottom`)
+          const card = this.lists[data.cardNumber - 1]
+          await axios.put(`https://api.trello.com/1/cards/${card.id}?idList=${this.finishedListId}&key=${this.apiKey}&token=${this.apiToken}&pos=bottom`)
           this.lists.splice(data.cardNumber - 1, 1)
         }
       },
       onTtsMark: (markName) => {}
     })
 
+    console.log('finishedListId:' + this.finishedListId)
     const response = await axios.get(
       `https://api.trello.com/1/lists/${this.listId}/cards?fields=all&key=${this.apiKey}&token=${this.apiToken}`
     )
