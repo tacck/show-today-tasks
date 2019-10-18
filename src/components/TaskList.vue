@@ -56,14 +56,15 @@ export default {
     }
   },
   mounted: async function () {
-    window.interactiveCanvas.ready({
-      onUpdate: (data) => {
-        console.log('onUpdate: ' + data)
-      },
-      onTtsMark: (markName) => {
-        console.log('onTtsMark: ' + markName)
-      }
-    })
+    // window.interactiveCanvas.ready({
+    //   onUpdate: (data) => {
+    //     console.log('onUpdate: ' + data)
+    //   },
+    //   onTtsMark: (markName) => {
+    //     console.log('onTtsMark: ' + markName)
+    //   }
+    // })
+    window.interactiveCanvas.ready()
 
     const response = await axios.get(
       `https://api.trello.com/1/lists/${this.listId}/cards?fields=all&key=${this.apiKey}&token=${this.apiToken}`
