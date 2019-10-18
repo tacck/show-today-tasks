@@ -74,7 +74,6 @@ export default {
       onTtsMark: (markName) => {}
     })
 
-    console.log('finishedListId:' + this.finishedListId)
     const response = await axios.get(
       `https://api.trello.com/1/lists/${this.listId}/cards?fields=all&key=${this.apiKey}&token=${this.apiToken}`
     )
