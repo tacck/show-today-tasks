@@ -1,33 +1,15 @@
 <template>
   <v-container fluid>
-    <v-data-iterator
-      :items="lists"
-      hide-default-footer
-    >
+    <v-data-iterator :items="list" hide-default-footer>
       <template v-slot:header>
-        <v-toolbar
-          class="mb-2"
-          color="indigo darken-5"
-          dark
-          flat
-        >
+        <v-toolbar class="mb-2" color="indigo darken-5" dark flat>
           <v-toolbar-title>Today's Tasks</v-toolbar-title>
         </v-toolbar>
       </template>
       <template v-slot:default="props">
         <v-row>
-          <v-col
-            v-for="item in props.items"
-            :key="item.name"
-            cols="12"
-            sm="6"
-            md="4"
-            lg="3"
-          >
-            <v-card
-              :id="item.id"
-              v-on:click="finish( item.id )"
-            >
+          <v-col v-for="item in props.items" :key="item.name" cols="12" sm="6" md="4" lg="3">
+            <v-card :id="item.id" v-on:click="finish( item.id )">
               <v-card-title>
                 <h4>{{ item.name }}</h4>
               </v-card-title>
@@ -55,26 +37,24 @@ export default {
     return {
       itemsPerPageOptions: [],
       itemsPerPage: 5,
-      lists: []
+      list: []
     }
   },
   mounted: async function () {
     // Callback で カード移動の処理を実装
     window.interactiveCanvas.ready({
       onUpdate: async data => {
-        console.log('onUpdate: ' + JSON.stringify(data))
-        console.log('finishedListId:' + this.finishedListId)
         let cardId = ''
         let cardNumber = -1
 
         if ('cardId' in data) {
           cardId = data.cardId
-          cardNumber = this.lists.findIndex(element => {
+          cardNumber = this.list.findIndex(element => {
             return element.id === cardId
           })
         } else if ('cardNumber' in data) {
           cardNumber = data.cardNumber - 1
-          const card = this.lists[cardNumber]
+          const card = this.list[cardNumber]
           cardId = card.id
         } else {
           // 更新不要なので終了
@@ -86,7 +66,7 @@ export default {
             this.finishedListId
           }&key=${this.apiKey}&token=${this.apiToken}&pos=bottom`
         )
-        this.lists.splice(cardNumber, 1)
+        this.list.splice(cardNumber, 1)
       },
       onTtsMark: markName => {}
     })
@@ -96,14 +76,11 @@ export default {
         this.apiKey
       }&token=${this.apiToken}`
     )
-    console.log(response)
-    this.lists = response.data
+    this.list = response.data
   },
   methods: {
     finish: function (id) {
-      console.log(id)
       window.interactiveCanvas.sendTextQuery(`finishedTask-${id}`)
-      // this.lists = this.lists.filter((list) => list.id !== id)
     }
   }
 }
